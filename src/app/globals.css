@@ -1,6 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+* {
+  font-family: 'Exo 2', sans-serif;
+}
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -17,11 +21,58 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-image: url("../assets/bg-img.png");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(15px);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.grafico-status {
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+}
+
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.status-label {
+  font-weight: bold;
+}
+
+.status-value {
+  background: linear-gradient(45deg, white, #2f0743);
+  background-size: 400% 400%;
+  animation: degrade 15s linear infinite;
+  color: #fff;
+  text-align: right;
+  padding: 2px;
+}
+
+.gradient-purple {
+  background: #41295a;
+  background: linear-gradient(to right, #41295a, #2f0743);
+}
+
+@keyframes degrade {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+.text-border {
+  -webkit-text-stroke-width: .7px;
+  -webkit-text-stroke-color: #000;
 }
