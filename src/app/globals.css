@@ -1,9 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 * {
-  font-family: 'Exo 2', sans-serif;
+  font-family: "Exo 2", sans-serif;
 }
 
 :root {
@@ -23,8 +23,16 @@
 body {
   background-image: url("../assets/bg-img.jpg");
   background-size: cover;
-  background-position: center;
+  background-position: center center;
   background-attachment: fixed;
+}
+@media screen and (max-width: 350px) {
+  body {
+    background-image: url("../assets/bg-img-mobile.jpg");
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+  }
 }
 
 .glass-effect {
@@ -73,6 +81,43 @@ body {
 }
 
 .text-border {
-  -webkit-text-stroke-width: .7px;
+  -webkit-text-stroke-width: 0.7px;
   -webkit-text-stroke-color: #000;
+}
+
+.mobile-pokecard-container {
+  @media (max-width: 350px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+  }
+}
+
+.mobile-pokecard-content {
+  @media (max-width: 350px) {
+    width: 110px;
+    font-size: 12px;
+  }
+}
+
+.mobile-pokemodal-pokestatus {
+  @media (max-width: 350px) {
+    display: flex;
+    flex-direction: column;
+  }
+
+}
+
+.mobile-pokemodal-content {
+  @media (max-width: 350px) {
+    width: 250px;
+    font-size: 12px;
+    padding: 15px;
+  }
+}
+
+.mobile-modal-close-icon-button{
+  @media (max-width: 350px) {
+    display: none;
+  }
 }

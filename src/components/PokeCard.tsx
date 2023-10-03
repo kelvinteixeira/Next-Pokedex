@@ -7,7 +7,6 @@ import { PokeStatus } from "./PokeStatus";
 import { capitalizeFirstLetter } from "@/utils/capitalize";
 import { Spinner } from "./Spinner";
 import "animate.css";
-import { AiOutlineArrowUp } from "react-icons/ai";
 
 type PokemonApiResponse = {
   id: number;
@@ -32,7 +31,7 @@ export const PokeCard = () => {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false);
   const [pokemonsLoaded, setPokemonsLoaded] = useState(20);
-  const [showBackToTop, setShowBackToTop] = useState(false);
+  const [isLoadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
     async function fetchPokemons() {
@@ -56,21 +55,13 @@ export const PokeCard = () => {
     fetchPokemons();
   }, [pokemonsLoaded]);
 
-  async function adicionarMaisPokemons() {
+  async function loadingMorePokemons() {
+    setLoadingMore(true);
     setPokemonsLoaded(pokemonsLoaded + 20);
+    setTimeout(() => {
+      setLoadingMore(false);
+    }, 1500);
   }
-
-  const handleScroll = () => {
-    if (window.pageYOffset > 100) {
-      setShowBackToTop(true);
-    } else {
-      setShowBackToTop(false);
-    }
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
 
   if (loading)
     return (
@@ -80,7 +71,7 @@ export const PokeCard = () => {
     );
   return (
     <>
-      <div className=" animate__animated animate__rollIn flex flex-row flex-wrap justify-around mt-10 ml-10 p-8 m-10 rounded-2xl">
+      <div className=" mobile-pokecard-container animate__animated animate__rollIn flex flex-row flex-wrap justify-around mt-10 ml-10 p-8 m-10 rounded-2xl">
         {pokemons.map((pokemon: PokemonApiResponse) => (
           <div
             onClick={() => {
@@ -88,9 +79,9 @@ export const PokeCard = () => {
               setSelectedPokemon(pokemon);
             }}
             key={pokemon.id}
-            className="hover:animate-bounce rounded-md p-4 m-1 glass-effect w-52 flex flex-col cursor-pointer "
+            className="mobile-pokecard-content hover:animate-bounce rounded-md p-4 m-1 glass-effect w-52 flex flex-col cursor-pointer"
           >
-            <h1 className="text-center font-extrabold text-2xl text-border text-purple-900">
+            <h1 className="text-center font-extrabold  text-border text-purple-900">
               {capitalizeFirstLetter(pokemon.name)}
             </h1>
             <h1 className="text-center font-bold text-xs">nº {pokemon.id}</h1>
@@ -114,39 +105,36 @@ export const PokeCard = () => {
           </div>
         ))}
       </div>
-      <div className="flex justify-center align-middle m-10 ">
-        <button
-          className="border w-28 h-8 rounded-lg text-white text-sm bg-purple-950 hover:bg-purple-900 transition ease-in"
-          onClick={adicionarMaisPokemons}
-        >
-          Carregar mais
-        </button>
-      </div>
-      <div className="flex justify-end">
-        <button
-          className="border w-10 h-10 mr-5 mb-5 rounded-full text-white text-2xl bg-purple-950 hover:bg-purple-900 transition ease-in flex justify-center align-middle pt-1 "
-          onClick={scrollToTop}
-        >
-          <AiOutlineArrowUp />
-        </button>
-      </div>
+      {isLoadingMore ? (
+        <Spinner />
+      ) : (
+        <div className="flex justify-center align-middle m-10 ">
+          <button
+            className="border w-32 h-10 rounded-lg text-purple-900 p-2  glass-effect hover:bg-purple-900 hover:text-white transition ease-in"
+            onClick={loadingMorePokemons}
+          >
+            Carregar mais
+          </button>
+        </div>
+      )}
+
       <PokeModal
         isOpen={isModalOpen}
         onClose={() => setModalOpen((prevState) => !prevState)}
       >
         {selectedPokemon && (
-          <>
-            <div className="flex flex-row justify-end">
+          <div className="mobile-pokemodal-container">
+            <div className="flex flex-row justify-end mobile-modal-close-icon-button ">
               <AiOutlineClose
                 style={{ width: 30, height: 30 }}
                 onClick={() => setModalOpen(false)}
                 className="cursor-pointer mt-2"
               />
             </div>
-            <h2 className="text-3xl text-purple-900 text-center text-border font-extrabold mb-4">
+            <h2 className="text-2xl text-purple-900 text-center text-border font-extrabold mb-4">
               {capitalizeFirstLetter(selectedPokemon.name)}
             </h2>
-            <div className="flex flex-row justify-around m-4">
+            <div className=" mobile-pokemodal-pokestatus flex flex-row justify-around m-4">
               <Image
                 src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${selectedPokemon.id}.png`}
                 alt="Foto do pokemon"
@@ -168,7 +156,7 @@ export const PokeCard = () => {
                 Fechar
               </button>
             </div>
-          </>
+          </div>
         )}
       </PokeModal>
     </>
